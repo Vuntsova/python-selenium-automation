@@ -11,12 +11,33 @@ driver.maximize_window()
 driver.get('https://www.amazon.com/')
 
 greeting = driver.find_element(By.XPATH, '//span[text()="Hello, Sign in"]')
-print(greeting.text)
-if greeting.text == "Hello, Sign in":
-    print("greeting.text")
-    ActionChains(driver).move_to_element(driver.find_element(By.XPATH, '//*[@id="nav-link-accountList"]/span[1]')).perform()
-    driver.find_element(By.XPATH, '//*[@id="nav-flyout-ya-signin"]/a/span').click()
 
+if greeting.text == "Hello, Sign in":
+
+    hover = ActionChains(driver).move_to_element(driver.find_element(By.XPATH, '//*[@id="nav-link-accountList"]/span[1]'))
+    hover.perform()
+
+    sign_in = driver.find_element(By.XPATH, '//*[@id="nav-flyout-ya-signin"]/a/span')
+    sign_in.click()
+
+    sign_in_email = driver.find_element(By.ID, 'ap_email')
+    sign_in_email.clear()
+    sign_in_email.send_keys('vuntsova@aol.com')
+
+    sign_in_continue = driver.find_element(By.ID, "continue")
+    sign_in_continue.click()
+
+    sign_in_password = driver.find_element(By.ID, 'ap_password')
+    sign_in_password.clear()
+    sign_in_password.send_keys('123123Ee')
+
+    sign_in_submit = driver.find_element(By.ID, "signInSubmit")
+    sign_in_submit.click()
+
+    verification_required = driver.find_element(By.XPATH, '//*[@id="auth-mfa-form"]/div/div/h1')
+    print(verification_required.text)
+    # verify
+    assert 'Two-Step Verification' in verification_required.text
 else:
     driver.quit()
 # search = driver.find_element(By.NAME, 'q')
